@@ -1,13 +1,26 @@
+// src/pages/Login.jsx
+
 import React, { useState } from 'react';
+import { login } from '../services/authService';
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log('Logging in with', email, password)
+
+    try {
+      // Call the login function with email and password
+      const token = await login(email, password); 
+
+      // Store the token in local storage
+      localStorage.setItem('authToken', token);
+
+      console.log('Logged in successfully!', token);
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
   };
 
   return (
